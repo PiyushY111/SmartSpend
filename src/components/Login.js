@@ -239,11 +239,8 @@ const Login = () => {
                   Email
                 </label>
                 <motion.div 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                   className="relative group"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl blur opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
                   <div className="relative bg-gray-900/50 rounded-xl">
                     <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400 w-5 h-5" />
                     <input
@@ -263,11 +260,8 @@ const Login = () => {
                   Password
                 </label>
                 <motion.div 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                   className="relative group"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl blur opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
                   <div className="relative bg-gray-900/50 rounded-xl">
                     <FiLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400 w-5 h-5" />
                     <input
