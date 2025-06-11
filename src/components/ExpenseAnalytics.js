@@ -5,6 +5,7 @@ import { FiTrendingUp, FiDollarSign } from 'react-icons/fi';
 
 const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316', '#eab308'];
 
+
 const ExpenseAnalytics = ({ expenses = [], categories = [] }) => {
   const [activeIndex, setActiveIndex] = useState(null);
 
