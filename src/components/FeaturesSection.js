@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FiCheckCircle, FiBarChart2, FiCalendar, FiTarget, FiCreditCard, FiDownload, FiPieChart, FiDollarSign, FiFilter, FiGlobe, FiPaperclip } from 'react-icons/fi';
+import { FiCheckCircle, FiBarChart2, FiTarget, FiCreditCard, FiDownload, FiPieChart, FiFilter, FiTrendingUp, FiAward } from 'react-icons/fi';
 
 function FeaturesSection() {
   const features = [
@@ -17,28 +17,28 @@ function FeaturesSection() {
       gradient: "from-purple-500 to-pink-500",
     },
     {
-      icon: <FiCalendar className="w-10 h-10 text-green-400 mb-4" />,
-      title: "Recurring Expenses",
-      description: "Set up and manage recurring bills and subscriptions automatically.",
-      gradient: "from-green-500 to-emerald-500",
-    },
-    {
       icon: <FiTarget className="w-10 h-10 text-yellow-400 mb-4" />,
       title: "Financial Goals",
       description: "Set and track your financial goals to stay motivated and focused.",
       gradient: "from-yellow-500 to-orange-500",
     },
     {
+      icon: <FiAward className="w-10 h-10 text-green-400 mb-4" />,
+      title: "Spending Goals & Challenge",
+      description: "Set spending targets and track your progress with interactive challenges.",
+      gradient: "from-green-500 to-emerald-500",
+    },
+    {
+      icon: <FiTrendingUp className="w-10 h-10 text-teal-400 mb-4" />,
+      title: "Spending Insights",
+      description: "Get personalized insights and recommendations to optimize your spending habits.",
+      gradient: "from-teal-500 to-cyan-500",
+    },
+    {
       icon: <FiCreditCard className="w-10 h-10 text-pink-400 mb-4" />,
       title: "Budget Management",
       description: "Create and monitor budgets for different expense categories.",
       gradient: "from-pink-500 to-rose-500",
-    },
-    {
-      icon: <FiPaperclip className="w-10 h-10 text-cyan-400 mb-4" />,
-      title: "Notes & Attachments",
-      description: "Add notes, tags, and attach files to your expenses for better organization.",
-      gradient: "from-cyan-500 to-blue-500",
     },
     {
       icon: <FiFilter className="w-10 h-10 text-indigo-400 mb-4" />,
@@ -51,12 +51,6 @@ function FeaturesSection() {
       title: "Category Management",
       description: "Organize your expenses with customizable categories.",
       gradient: "from-red-500 to-pink-500",
-    },
-    {
-      icon: <FiGlobe className="w-10 h-10 text-teal-400 mb-4" />,
-      title: "Currency Manager",
-      description: "Manage and track expenses in multiple currencies with ease.",
-      gradient: "from-teal-500 to-emerald-500",
     },
     {
       icon: <FiDownload className="w-10 h-10 text-orange-400 mb-4" />,
