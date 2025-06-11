@@ -174,7 +174,20 @@ const Login = () => {
               className="flex justify-center mb-6"
             >
               <div className="w-24 h-24 rounded-full border-4 border-blue-500/30 flex items-center justify-center">
-                <FiDollarSign className="w-12 h-12 text-blue-400" />
+                <motion.div
+                  initial={{ scale: 0.8, y: 0 }}
+                  animate={{
+                    scale: [0.9, 1.1, 0.9],
+                    y: [0, -5, 0]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <FiDollarSign className="w-12 h-12 text-blue-400" />
+                </motion.div>
               </div>
             </motion.div>
 
@@ -302,7 +315,7 @@ const Login = () => {
                   ) : (
                     <FiKey className="w-5 h-5 mr-2" />
                   )}
-                  {isSignUp ? 'Create Account' : 'Sign In'}
+                  {isSignUp ? 'Create Account' : 'Login'}
                 </span>
               </motion.button>
             </motion.form>
@@ -349,7 +362,7 @@ const Login = () => {
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                   />
                 </svg>
-                {isSignUp ? 'Sign up with Google' : 'Sign in with Google'}
+                {isSignUp ? 'Sign up with Google' : 'Login with Google'}
               </motion.button>
             </motion.div>
 
@@ -365,7 +378,7 @@ const Login = () => {
                 onClick={() => setIsSignUp(!isSignUp)}
                 className="text-blue-400 hover:text-blue-300 transition-colors duration-300"
               >
-                {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+                {isSignUp ? 'Already have an account? Login' : "Don't have an account? Sign up"}
               </motion.button>
             </motion.div>
           </div>
