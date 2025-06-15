@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiRepeat, FiDollarSign, FiTag, FiCalendar, FiPlus } from 'react-icons/fi';
+import { FiRepeat, FiDollarSign, FiTag, FiCalendar, FiPlus, FiTrash2 } from 'react-icons/fi';
 
 const RecurringExpenseForm = ({ categories, onAddRecurringExpense, recurringExpenses, handleRemoveRecurringExpense }) => {
   const [description, setDescription] = useState('');
@@ -8,6 +8,7 @@ const RecurringExpenseForm = ({ categories, onAddRecurringExpense, recurringExpe
   const [category, setCategory] = useState('');
   const [frequency, setFrequency] = useState('monthly'); // e.g., daily, weekly, monthly, yearly
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showAllRecurring, setShowAllRecurring] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -183,7 +184,7 @@ const RecurringExpenseForm = ({ categories, onAddRecurringExpense, recurringExpe
         <h3 className="text-xl font-bold text-white mb-3">Current Recurring Expenses</h3>
         {recurringExpenses.length > 0 ? (
           <AnimatePresence>
-            {recurringExpenses.map(recExp => (
+            { (showAllRecurring ? recurringExpenses : recurringExpenses.slice(0, 3)).map(recExp => (
               <motion.div
                 key={recExp.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -204,6 +205,21 @@ const RecurringExpenseForm = ({ categories, onAddRecurringExpense, recurringExpe
                 </button>
               </motion.div>
             ))}
+            {recurringExpenses.length > 3 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="mt-4 text-center"
+              >
+                <button
+                  onClick={() => setShowAllRecurring(!showAllRecurring)}
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  {showAllRecurring ? "Show Less" : `Show All (${recurringExpenses.length - 3} more)`}
+                </button>
+              </motion.div>
+            )}
           </AnimatePresence>
         ) : (
           <p className="text-gray-400 text-center py-4">No recurring expenses found.</p>

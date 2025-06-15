@@ -17,6 +17,7 @@ const ExpenseGoals = ({ expenses = [], categories = [] }) => {
     duration: '30', // days
     startDate: new Date().toISOString().split('T')[0],
   });
+  const [showAllGoals, setShowAllGoals] = useState(false);
 
   // Save goals to localStorage whenever they change
   React.useEffect(() => {
@@ -239,7 +240,7 @@ const ExpenseGoals = ({ expenses = [], categories = [] }) => {
       </AnimatePresence>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {goalsWithProgress.map(goal => (
+        { (showAllGoals ? goalsWithProgress : goalsWithProgress.slice(0, 3)).map(goal => (
           <motion.div
             key={goal.id}
             initial={{ opacity: 0, y: 20 }}
@@ -248,93 +249,82 @@ const ExpenseGoals = ({ expenses = [], categories = [] }) => {
             className="glass-card p-6"
           >
             <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="text-xl font-semibold text-white">{goal.name}</h3>
-                <p className="text-gray-400">{goal.category}</p>
-              </div>
-              <div className="flex gap-2">
-                <button
+              <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                <FiTarget className="w-5 h-5 text-blue-400" />
+                {goal.name}
+              </h3>
+              <div className="flex space-x-2">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => handleEditGoal(goal)}
-                  className="p-2 text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 hover:text-blue-400 transition-colors"
                 >
                   <FiEdit2 className="w-5 h-5" />
-                </button>
-                <button
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => handleDeleteGoal(goal.id)}
-                  className="p-2 text-gray-400 hover:text-red-400 transition-colors"
+                  className="text-gray-400 hover:text-red-400 transition-colors"
                 >
                   <FiTrash2 className="w-5 h-5" />
-                </button>
+                </motion.button>
               </div>
             </div>
+            
+            <p className="text-gray-300 text-sm mb-2">Category: <span className="font-medium text-white">{goal.category}</span></p>
+            <p className="text-gray-300 text-sm mb-2">Target: <span className="font-medium text-white">{formatAmount(goal.targetAmount)}</span> over <span className="font-medium text-white">{goal.duration} days</span></p>
+            <p className="text-gray-300 text-sm mb-4">Spent: <span className="font-medium text-white">{formatAmount(goal.spentAmount)}</span></p>
 
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between text-sm text-gray-400 mb-1">
-                  <span>Progress</span>
-                  <span>{goal.progress.toFixed(1)}%</span>
-                </div>
-                <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${goal.progress}%` }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className={`h-full ${
-                      goal.isOnTrack ? 'bg-green-500' : 'bg-red-500'
-                    }`}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-gray-400 text-sm">Target</p>
-                  <p className="text-white font-semibold">{formatAmount(goal.targetAmount)}</p>
-                </div>
-                <div>
-                  <p className="text-gray-400 text-sm">Spent</p>
-                  <p className="text-white font-semibold">{formatAmount(goal.spentAmount)}</p>
-                </div>
-                <div>
-                  <p className="text-gray-400 text-sm">Remaining</p>
-                  <p className={`font-semibold ${
-                    goal.remainingAmount >= 0 ? 'text-green-400' : 'text-red-400'
-                  }`}>
-                    {formatAmount(Math.abs(goal.remainingAmount))}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-400 text-sm">Status</p>
-                  <p className={`font-semibold ${
-                    goal.isCompleted
-                      ? goal.isOnTrack
-                        ? 'text-green-400'
-                        : 'text-red-400'
-                      : goal.isOnTrack
-                        ? 'text-blue-400'
-                        : 'text-yellow-400'
-                  }`}>
-                    {goal.isCompleted
-                      ? goal.isOnTrack
-                        ? 'Completed'
-                        : 'Failed'
-                      : goal.isOnTrack
-                        ? 'On Track'
-                        : 'At Risk'}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 text-sm text-gray-400">
-                <FiCalendar className="w-4 h-4" />
-                <span>
-                  {new Date(goal.startDate).toLocaleDateString()} -{' '}
-                  {new Date(new Date(goal.startDate).getTime() + goal.duration * 24 * 60 * 60 * 1000).toLocaleDateString()}
-                </span>
-              </div>
+            <div className="w-full bg-gray-700 rounded-full h-2.5 mb-2">
+              <motion.div
+                className={`h-2.5 rounded-full ${goal.progress > 100 ? 'bg-red-500' : 'bg-blue-500'}`}
+                initial={{ width: 0 }}
+                animate={{ width: `${Math.min(goal.progress, 100)}%` }}
+                transition={{ duration: 0.5 }}
+              ></motion.div>
             </div>
+            <p className="text-right text-sm text-gray-300 mb-4">{goal.progress.toFixed(1)}% complete</p>
+            
+            {!goal.isCompleted ? (
+              <p className={`text-sm font-medium ${goal.isOnTrack ? 'text-green-400' : 'text-red-400'}`}>
+                {goal.isOnTrack ? 
+                  `You are on track! Remaining: ${formatAmount(goal.remainingAmount)}` :
+                  `You are over budget by ${formatAmount(Math.abs(goal.remainingAmount))}`}
+              </p>
+            ) : (
+              <p className="text-sm font-medium text-yellow-400">Goal ended.</p>
+            )}
+            
+            {goal.progress >= 100 && goal.isOnTrack && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="mt-4 flex items-center gap-2 text-green-400 font-semibold"
+              >
+                <FiAward className="w-5 h-5" />
+                <span>Goal Achieved!</span>
+              </motion.div>
+            )}
           </motion.div>
         ))}
+        {goalsWithProgress.length > 3 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="md:col-span-2 text-center"
+          >
+            <button
+              onClick={() => setShowAllGoals(!showAllGoals)}
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              {showAllGoals ? "Show Less" : `Show All (${goalsWithProgress.length - 3} more)`}
+            </button>
+          </motion.div>
+        )}
       </div>
     </div>
   );

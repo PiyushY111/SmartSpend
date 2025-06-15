@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PieChart, Pie, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
+import { PieChart, Pie, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, Sector } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiTrendingUp, FiDollarSign } from 'react-icons/fi';
 
@@ -8,6 +8,7 @@ const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316', '#eab308'
 
 const ExpenseAnalytics = ({ expenses = [], categories = [] }) => {
   const [activeIndex, setActiveIndex] = useState(null);
+  const [showAllCategories, setShowAllCategories] = useState(false);
 
   const formatAmount = (amount) => {
     return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(amount);
@@ -157,8 +158,13 @@ const ExpenseAnalytics = ({ expenses = [], categories = [] }) => {
                   const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
                   return (
                     <g>
-                      <path
-                        d={`M${cx},${cy}l${outerRadius * Math.cos(startAngle)},${outerRadius * Math.sin(startAngle)}A${outerRadius},${outerRadius} 0 0,1 ${cx + outerRadius * Math.cos(endAngle)},${cy + outerRadius * Math.sin(endAngle)}`}
+                      <Sector
+                        cx={cx}
+                        cy={cy}
+                        innerRadius={innerRadius}
+                        outerRadius={outerRadius + 10}
+                        startAngle={startAngle}
+                        endAngle={endAngle}
                         fill={fill}
                         stroke="white"
                         strokeWidth={2}
@@ -182,7 +188,7 @@ const ExpenseAnalytics = ({ expenses = [], categories = [] }) => {
             className="mt-4 space-y-2"
           >
             <h4 className="text-md font-semibold text-white">Budget Overview:</h4>
-            {categorySpending.map((cat, index) => (
+            { (showAllCategories ? categorySpending : categorySpending.slice(0, 3)).map((cat, index) => (
               <motion.div
                 key={cat.name}
                 initial={{ opacity: 0, x: -20 }}
@@ -202,6 +208,21 @@ const ExpenseAnalytics = ({ expenses = [], categories = [] }) => {
                 </span>
               </motion.div>
             ))}
+            {categorySpending.length > 3 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="mt-4 text-center"
+              >
+                <button
+                  onClick={() => setShowAllCategories(!showAllCategories)}
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  {showAllCategories ? "Show Less" : `Show All (${categorySpending.length - 3} more)`}
+                </button>
+              </motion.div>
+            )}
           </motion.div>
         </motion.div>
         <motion.div

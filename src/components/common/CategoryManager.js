@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiSettings, FiPlus } from 'react-icons/fi';
+import { FiSettings, FiPlus, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 const CategoryManager = ({ categories, onAddCategory, onRemoveCategory, onUpdateBudget }) => {
   const [newCategory, setNewCategory] = useState('');
   const [budgetAmount, setBudgetAmount] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   const handleAddCategory = async (e) => {
     e.preventDefault();
@@ -47,6 +48,8 @@ const CategoryManager = ({ categories, onAddCategory, onRemoveCategory, onUpdate
       },
     },
   };
+
+  const displayedCategories = showAll ? categories : categories.slice(0, 3);
 
   return (
     <motion.div
@@ -131,7 +134,7 @@ const CategoryManager = ({ categories, onAddCategory, onRemoveCategory, onUpdate
         <div className="space-y-3">
           {categories.length > 0 ? (
             <AnimatePresence>
-              {categories.map(category => (
+              {displayedCategories.map(category => (
                 <motion.div 
                   key={category.id} 
                   initial={{ opacity: 0, y: 20 }}
@@ -147,7 +150,7 @@ const CategoryManager = ({ categories, onAddCategory, onRemoveCategory, onUpdate
                     onChange={(e) => onUpdateBudget(category.id, parseFloat(e.target.value))}
                     min="0"
                     step="0.01"
-                    className="w-full px-2 py-1 rounded-lg bg-white/10 text-white placeholder-indigo-200 border border-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300 text-sm"
+                    className="w-24 px-2 py-1 rounded-lg bg-white/10 text-white placeholder-indigo-200 border border-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300 text-sm"
                   />
                   <button
                     onClick={() => onRemoveCategory(category.id)}
@@ -160,6 +163,27 @@ const CategoryManager = ({ categories, onAddCategory, onRemoveCategory, onUpdate
             </AnimatePresence>
           ) : (
             <p className="text-gray-400 text-center py-4">No categories found. Add your first category!</p>
+          )}
+          
+          {categories.length > 3 && (
+            <motion.button
+              onClick={() => setShowAll(!showAll)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full py-2 px-4 mt-2 rounded-lg bg-white/10 text-white font-medium hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-2"
+            >
+              {showAll ? (
+                <>
+                  <FiChevronUp className="w-5 h-5" />
+                  Show Less
+                </>
+              ) : (
+                <>
+                  <FiChevronDown className="w-5 h-5" />
+                  See More
+                </>
+              )}
+            </motion.button>
           )}
         </div>
       </div>

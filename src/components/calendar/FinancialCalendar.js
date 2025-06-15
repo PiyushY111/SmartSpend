@@ -39,6 +39,7 @@ const FinancialCalendar = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [showUpcoming, setShowUpcoming] = useState(false);
   const [recurringPatterns, setRecurringPatterns] = useState([]);
+  const [expandedDays, setExpandedDays] = useState({});
 
   useEffect(() => {
     // Combine all financial events
@@ -430,6 +431,10 @@ const FinancialCalendar = ({
       <div className="grid grid-cols-7 gap-3">
         {getDaysToShow().map((day, index) => {
           const dayEvents = getEventsForDay(day);
+          const isCurrentMonth = isSameMonth(day, currentDate);
+          const isTodayDay = isToday(day);
+          const displayEvents = expandedDays[format(day, 'yyyy-MM-dd')] ? dayEvents : dayEvents.slice(0, 3);
+
           return (
             <motion.div
               key={day.toString()}
@@ -440,16 +445,16 @@ const FinancialCalendar = ({
               }}
               className={`
                 min-h-[140px] p-3 rounded-xl cursor-pointer
-                ${isSameMonth(day, currentDate) ? 'bg-gray-800/30' : 'bg-gray-900/30'}
-                ${isToday(day) ? 'ring-2 ring-blue-500/50' : ''}
+                ${isCurrentMonth ? 'bg-gray-800/30' : 'bg-gray-900/30'}
+                ${isTodayDay ? 'ring-2 ring-blue-500/50' : ''}
                 ${view === 'week' && isSameWeek(day, currentDate) ? 'ring-2 ring-purple-500/50' : ''}
                 transition-all duration-200 border border-gray-700/50 hover:border-gray-600/50 backdrop-blur-sm
               `}
             >
               <div className="flex justify-between items-center mb-2">
                 <div className={`text-sm font-medium ${
-                  isToday(day) ? 'text-blue-400' : 
-                  isSameMonth(day, currentDate) ? 'text-white' : 'text-gray-500'
+                  isTodayDay ? 'text-blue-400' : 
+                  isCurrentMonth ? 'text-white' : 'text-gray-500'
                 }`}>
                   {format(day, 'd')}
                 </div>
@@ -460,7 +465,7 @@ const FinancialCalendar = ({
                 )}
               </div>
               <div className="space-y-1.5">
-                {dayEvents.map(event => (
+                {displayEvents.map(event => (
                   <motion.div
                     key={event.id}
                     whileHover={{ scale: 1.05 }}

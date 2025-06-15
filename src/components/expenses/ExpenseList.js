@@ -4,6 +4,11 @@ import { FiPieChart, FiDollarSign, FiEdit2, FiTag, FiPaperclip } from 'react-ico
 // import { useCurrency } from "../contexts/CurrencyContext";
 
 const ExpenseList = ({ expenses, onRemove, onUpdate, onViewDetails, loading }) => {
+  const [showAllExpenses, setShowAllExpenses] = useState(false);
+
+  const displayedExpenses = showAllExpenses ? expenses : expenses.slice(0, 3);
+  const hasMoreExpenses = expenses.length > 3;
+
   // const { convertAmount, formatAmount, selectedCurrency } = useCurrency();
 
   const formatAmount = (amount) => {
@@ -169,80 +174,97 @@ const ExpenseList = ({ expenses, onRemove, onUpdate, onViewDetails, loading }) =
           <p className="text-lg">No expenses found. Start by adding your first expense!</p>
         </motion.div>
       ) : (
-        <motion.ul
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-4"
-        >
-          <AnimatePresence>
-            {expenses.map((expense) => (
-              <motion.li
-                key={expense.id}
-                variants={itemVariants}
-                whileHover={{
-                  scale: 1.02,
-                  transition: { duration: 0.2 },
-                }}
-                className="glass-card p-6 rounded-2xl flex flex-col md:flex-row md:items-center md:justify-between gap-4 cursor-pointer hover:bg-gray-700/60 transition-colors relative overflow-hidden group"
-                onClick={() => onViewDetails(expense)}
-              >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  initial={false}
-                  whileHover={{ opacity: 1 }}
-                />
-                <div className="flex-1 flex flex-col md:flex-row md:items-center md:gap-8 relative z-10">
-                  <div className="flex-1 flex flex-col gap-1">
-                    <div className="flex items-center gap-2">
+        <>
+          <motion.ul
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="space-y-4"
+          >
+            <AnimatePresence>
+              {displayedExpenses.map((expense) => (
+                <motion.li
+                  key={expense.id}
+                  variants={itemVariants}
+                  whileHover={{
+                    scale: 1.02,
+                    transition: { duration: 0.2 },
+                  }}
+                  className="glass-card p-6 rounded-2xl flex flex-col md:flex-row md:items-center md:justify-between gap-4 cursor-pointer hover:bg-gray-700/60 transition-colors relative overflow-hidden group"
+                  onClick={() => onViewDetails(expense)}
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    initial={false}
+                    whileHover={{ opacity: 1 }}
+                  />
+                  <div className="flex-1 flex flex-col md:flex-row md:items-center md:gap-8 relative z-10">
+                    <div className="flex-1 flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <motion.span
+                          whileHover={{ scale: 1.02 }}
+                          className="text-lg font-semibold text-white"
+                        >
+                          {expense.description}
+                        </motion.span>
+                        {hasNotesOrAttachments(expense) && (
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="flex items-center gap-1 text-blue-400"
+                          >
+                            <FiEdit2 className="w-4 h-4" />
+                            {expense.tags && expense.tags.length > 0 && (
+                              <FiTag className="w-4 h-4" />
+                            )}
+                            {expense.attachments && expense.attachments.length > 0 && (
+                              <FiPaperclip className="w-4 h-4" />
+                            )}
+                          </motion.div>
+                        )}
+                      </div>
                       <motion.span
                         whileHover={{ scale: 1.02 }}
-                        className="text-lg font-semibold text-white"
+                        className="text-gray-400 text-sm"
                       >
-                        {expense.description}
+                        {expense.category}
                       </motion.span>
-                      {hasNotesOrAttachments(expense) && (
-                        <motion.div
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          className="flex items-center gap-1 text-blue-400"
-                        >
-                          <FiEdit2 className="w-4 h-4" />
-                          {expense.tags && expense.tags.length > 0 && (
-                            <FiTag className="w-4 h-4" />
-                          )}
-                          {expense.attachments && expense.attachments.length > 0 && (
-                            <FiPaperclip className="w-4 h-4" />
-                          )}
-                        </motion.div>
-                      )}
                     </div>
-                    <motion.span
-                      whileHover={{ scale: 1.02 }}
-                      className="text-gray-400 text-sm"
-                    >
-                      {expense.category}
-                    </motion.span>
+                    <div className="flex flex-col gap-1 md:items-end">
+                      <motion.span
+                        whileHover={{ scale: 1.05 }}
+                        className="text-lg font-bold text-blue-400"
+                      >
+                        {formatAmount(expense.amount)}
+                      </motion.span>
+                      <motion.span
+                        whileHover={{ scale: 1.02 }}
+                        className="text-gray-400 text-xs"
+                      >
+                        {formatDate(expense.date)}
+                      </motion.span>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-1 md:items-end">
-                    <motion.span
-                      whileHover={{ scale: 1.05 }}
-                      className="text-lg font-bold text-blue-400"
-                    >
-                      {formatAmount(expense.amount)}
-                    </motion.span>
-                    <motion.span
-                      whileHover={{ scale: 1.02 }}
-                      className="text-gray-400 text-xs"
-                    >
-                      {formatDate(expense.date)}
-                    </motion.span>
-                  </div>
-                </div>
-              </motion.li>
-            ))}
-          </AnimatePresence>
-        </motion.ul>
+                </motion.li>
+              ))}
+            </AnimatePresence>
+          </motion.ul>
+          {hasMoreExpenses && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="mt-6 text-center"
+            >
+              <button
+                onClick={() => setShowAllExpenses(!showAllExpenses)}
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                {showAllExpenses ? "Show Less" : `Show All (${expenses.length - 3} more)`}
+              </button>
+            </motion.div>
+          )}
+        </>
       )}
     </motion.div>
   );
