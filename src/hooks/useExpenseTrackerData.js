@@ -47,6 +47,26 @@ const useExpenseTrackerData = () => {
       
       if (savedCategories) {
         setCategories(JSON.parse(savedCategories));
+      } else {
+        // Initialize default categories for new users
+        const defaultCategories = [
+          { id: '1', name: 'Food & Dining', budget: 0 },
+          { id: '2', name: 'Housing & Rent', budget: 0 },
+          { id: '3', name: 'Transportation', budget: 0 },
+          { id: '4', name: 'Utilities', budget: 0 },
+          { id: '5', name: 'Entertainment', budget: 0 },
+          { id: '6', name: 'Shopping', budget: 0 },
+          { id: '7', name: 'Healthcare', budget: 0 },
+          { id: '8', name: 'Education', budget: 0 },
+          { id: '9', name: 'Personal Care', budget: 0 },
+          { id: '10', name: 'Travel', budget: 0 },
+          { id: '11', name: 'Gifts & Donations', budget: 0 },
+          { id: '12', name: 'Savings & Investment', budget: 0 },
+          { id: '13', name: 'Insurance', budget: 0 },
+          { id: '14', name: 'Miscellaneous', budget: 0 }
+        ];
+        setCategories(defaultCategories);
+        localStorage.setItem(`categories_${currentUser.uid}`, JSON.stringify(defaultCategories));
       }
 
       if (savedRecurringExpenses) {
