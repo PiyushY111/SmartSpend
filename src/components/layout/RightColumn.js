@@ -1,12 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FiTrendingUp, FiPieChart, FiTarget, FiUsers } from 'react-icons/fi';
-import ExpenseAnalytics from './ExpenseAnalytics';
-import ExpenseFilter from './ExpenseFilter';
-import ExpenseList from './ExpenseList';
-import FinancialGoals from './FinancialGoals';
-import ExpenseInsights from './ExpenseInsights';
-import ExpenseGoals from './ExpenseGoals';
+import ExpenseAnalytics from '../expenses/ExpenseAnalytics';
+import ExpenseFilter from '../expenses/ExpenseFilter';
+import ExpenseList from '../expenses/ExpenseList';
+import FinancialGoals from '../goals/FinancialGoals';
+import ExpenseInsights from '../expenses/ExpenseInsights';
+import ExpenseGoals from '../goals/ExpenseGoals';
 
 function RightColumn({
   filteredExpenses,

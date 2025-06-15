@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { FiEye, FiEyeOff, FiMail, FiLock, FiLoader, FiCheckCircle, FiKey, FiAlertCircle, FiShield, FiUserPlus, FiDollarSign, FiTrendingUp, FiCreditCard, FiPieChart, FiTarget, FiGlobe, FiBarChart2, FiActivity, FiPercent, FiTrendingDown, FiCalendar, FiRepeat } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 

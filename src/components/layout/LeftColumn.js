@@ -1,14 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FiPlusCircle, FiSettings, FiRepeat, FiTrendingUp, FiPieChart, FiTarget, FiGlobe } from 'react-icons/fi';
-import ExpenseForm from './ExpenseForm';
-import CategoryManager from './CategoryManager';
-import RecurringExpenseForm from './RecurringExpenseForm';
-import ExpenseAnalytics from './ExpenseAnalytics';
-import ExpenseFilter from './ExpenseFilter';
-import ExpenseList from './ExpenseList';
-import FinancialGoals from './FinancialGoals';
-import MultiCurrencyManager from './MultiCurrencyManager';
+import ExpenseForm from '../expenses/ExpenseForm';
+import CategoryManager from '../common/CategoryManager';
+import RecurringExpenseForm from '../expenses/RecurringExpenseForm';
+import ExpenseAnalytics from '../expenses/ExpenseAnalytics';
+import ExpenseFilter from '../expenses/ExpenseFilter';
+import ExpenseList from '../expenses/ExpenseList';
+import FinancialGoals from '../goals/FinancialGoals';
+import MultiCurrencyManager from '../common/MultiCurrencyManager';
+import FinancialQuoteBox from '../common/FinancialQuoteBox';
 
 function LeftColumn({
   onAddExpense,
@@ -71,6 +72,14 @@ function LeftColumn({
           </div>
           <MultiCurrencyManager />
         </div>
+      </motion.div>
+
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.7 }}
+      >
+        <FinancialQuoteBox />
       </motion.div>
     </div>
   );

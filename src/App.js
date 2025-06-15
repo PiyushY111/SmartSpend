@@ -1,17 +1,18 @@
 import React from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { AnimatePresence, motion } from 'framer-motion';
-import Login from './components/Login';
-import ExpenseDetailModal from './components/ExpenseDetailModal';
-import Header from './components/Header';
-import HeroSection from './components/HeroSection';
-import FeaturesSection from './components/FeaturesSection';
-import Footer from './components/Footer';
-import LeftColumn from './components/LeftColumn';
-import RightColumn from './components/RightColumn';
-import KeyboardShortcutsModal from './components/KeyboardShortcutsModal';
-import ExpenseInsights from './components/ExpenseInsights';
-import ExpenseGoals from './components/ExpenseGoals';
+import Login from './components/auth/Login';
+import ExpenseDetailModal from './components/expenses/ExpenseDetailModal';
+import Header from './components/layout/Header';
+import HeroSection from './components/landing/HeroSection';
+import FeaturesSection from './components/landing/FeaturesSection';
+import Footer from './components/layout/Footer';
+import LeftColumn from './components/layout/LeftColumn';
+import RightColumn from './components/layout/RightColumn';
+import KeyboardShortcutsModal from './components/common/KeyboardShortcutsModal';
+import ExpenseInsights from './components/expenses/ExpenseInsights';
+import ExpenseGoals from './components/goals/ExpenseGoals';
+import FinancialCalendar from './components/calendar/FinancialCalendar';
 import useExpenseTrackerData from './hooks/useExpenseTrackerData';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -151,6 +152,15 @@ function AppContent() {
                 />
               </div>
             </div>
+          </div>
+
+          <div className="container mx-auto px-4 py-8">
+            <FinancialCalendar
+              expenses={expenses}
+              recurringExpenses={recurringExpenses}
+              financialGoals={financialGoals}
+              onEventClick={handleViewExpenseDetails}
+            />
           </div>
         </div>
       </main>

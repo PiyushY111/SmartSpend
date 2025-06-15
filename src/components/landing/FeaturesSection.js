@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FiCheckCircle, FiBarChart2, FiTarget, FiCreditCard, FiDownload, FiPieChart, FiFilter, FiTrendingUp, FiAward } from 'react-icons/fi';
+import { FiCheckCircle, FiBarChart2, FiTarget, FiCreditCard, FiDownload, FiPieChart, FiFilter, FiTrendingUp, FiAward, FiCalendar } from 'react-icons/fi';
 
 function FeaturesSection() {
   const features = [
@@ -23,9 +23,9 @@ function FeaturesSection() {
       gradient: "from-yellow-500 to-orange-500",
     },
     {
-      icon: <FiAward className="w-10 h-10 text-green-400 mb-4" />,
-      title: "Spending Goals & Challenge",
-      description: "Set spending targets and track your progress with interactive challenges.",
+      icon: <FiCalendar className="w-10 h-10 text-green-400 mb-4" />,
+      title: "Financial Calendar",
+      description: "Plan and track your financial activities with an interactive calendar view.",
       gradient: "from-green-500 to-emerald-500",
     },
     {
